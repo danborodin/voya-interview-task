@@ -1,0 +1,15 @@
+---
+app:
+  name: interview-go-service
+
+server:
+  port: "8080"
+  url: "http://localhost:8080"
+
+cache:
+  ttl:  120s
+  clearticker: 60s
+
+apiratelimit:
+  rate: 60s
+  burst: 1
