@@ -9,9 +9,13 @@ import (
 )
 
 const (
-	AppName = "interview-go-service"
-	Host    = "localhost"
-	Port    = "8000"
+	AppName           = "interview-go-service"
+	Host              = "localhost"
+	Port              = "8000"
+	CacheTTL          = time.Duration(time.Minute * 2)
+	CacheClearTicker  = time.Duration(time.Second * 60)
+	ApiRateLimitRate  = time.Duration(time.Second * 60)
+	ApiRateLimitBurst = 10
 )
 
 type Configuration struct {
@@ -25,8 +29,8 @@ type Configuration struct {
 	}
 
 	Cache struct {
-		TTL         time.Duration `yaml:"ttl"`         // min
-		ClearTicker time.Duration `yaml:"clearticker"` // sec
+		TTL         time.Duration `yaml:"ttl"`
+		ClearTicker time.Duration `yaml:"clearticker"`
 	} `yaml:"cache"`
 
 	ApiRateLimit struct {
@@ -61,5 +65,17 @@ func (cfg *Configuration) setDefaults() {
 	}
 	if cfg.Server.Port == "" {
 		cfg.Server.Port = Port
+	}
+	if cfg.Cache.TTL == 0 {
+		cfg.Cache.TTL = CacheTTL
+	}
+	if cfg.Cache.ClearTicker == 0 {
+		cfg.Cache.ClearTicker = CacheClearTicker
+	}
+	if cfg.ApiRateLimit.Rate == 0 {
+		cfg.ApiRateLimit.Rate = ApiRateLimitRate
+	}
+	if cfg.ApiRateLimit.Burst == 0 {
+		cfg.ApiRateLimit.Burst = ApiRateLimitBurst
 	}
 }

@@ -65,7 +65,7 @@ func (s *service) GetFilteredBeers(filters string) ([]backendbeer.BeerResponse, 
 
 	// simulating api rate limit
 	if !s.rateLimiter.Allow() {
-		return nil, errors.New("rate limit exceeded")
+		return nil, ErrRateLimitExceeded
 	}
 
 	beers, err := s.client.ListBeers()
